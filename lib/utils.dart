@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+
 const imageUrl = 'https://image.tmdb.org/t/p/w500';
+const kBackgoundColor = Color(0xFF191a2c);
 
 Map<String, int> genres = {
   'Action': 28,
@@ -33,7 +36,6 @@ Map<String, int> genres = {
 
 getGenre(int genreId, int index) {
   late final String genre;
-
   genre = genres.keys
       .where((element) => genres.containsValue(genreId))
       .elementAt(index);

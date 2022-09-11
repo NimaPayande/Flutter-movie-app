@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-Trending trendingFromJson(String str) => Trending.fromJson(json.decode(str));
+Model modelFromJson(String str) => Model.fromJson(json.decode(str));
 
-String trendingToJson(Trending data) => json.encode(data.toJson());
+String modelToJson(Model data) => json.encode(data.toJson());
 
-class Trending {
-  Trending({
+class Model {
+  Model({
     required this.page,
     required this.results,
     required this.totalPages,
@@ -17,7 +17,7 @@ class Trending {
   int totalPages;
   int totalResults;
 
-  factory Trending.fromJson(Map<String, dynamic> json) => Trending(
+  factory Model.fromJson(Map<String, dynamic> json) => Model(
         page: json["page"],
         results:
             List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
@@ -45,6 +45,7 @@ class Result {
     required this.genreIds,
     required this.popularity,
     required this.releaseDate,
+    required this.mediaType,
     required this.video,
     required this.voteAverage,
     required this.voteCount,
@@ -64,6 +65,7 @@ class Result {
   List<int>? genreIds;
   double? popularity;
   DateTime? releaseDate;
+  MediaType? mediaType;
   bool? video;
   double? voteAverage;
   int? voteCount;
@@ -96,6 +98,7 @@ class Result {
         originCountry: json["origin_country"] == null
             ? null
             : List<String>.from(json["origin_country"].map((x) => x)),
+        mediaType: mediaTypeValues.map[json["media_type"]],
       );
 
   Map<String, dynamic> toJson() => {
@@ -123,4 +126,21 @@ class Result {
             ? null
             : List<dynamic>.from(originCountry!.map((x) => x)),
       };
+}
+
+enum MediaType { movie, tv }
+
+final mediaTypeValues =
+    EnumValues({"movie": MediaType.movie, "tv": MediaType.tv});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap;
+    return reverseMap;
+  }
 }
