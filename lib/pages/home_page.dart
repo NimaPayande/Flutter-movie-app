@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     return ListView(
       children: [
         const SizedBox(
-          height: 10,
+          height: 25,
         ),
         UpcomingMovies(
           future: upcomingFuture,

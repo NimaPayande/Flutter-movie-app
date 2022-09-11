@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Movie app',
       theme: ThemeData(
+          fontFamily: 'poppins',
           iconTheme: const IconThemeData(color: Colors.white),
           textTheme: const TextTheme(
               bodyMedium: TextStyle(
