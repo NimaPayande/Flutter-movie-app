@@ -1,1 +1,1 @@
-const apiKey = '54d2d0688cf3c93a4146970f189b7b78';
+const apiKey = 'get your api key => https://www.themoviedb.org/';
