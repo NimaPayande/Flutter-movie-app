@@ -4,15 +4,13 @@ import 'package:movie_app/utils.dart';
 import '../models/model.dart';
 
 class MoviesListView extends StatelessWidget {
-  const MoviesListView(
-      {required this.future,
-      Key? key,
-      required this.headlineText,
-      this.aspectRatio = 1.16})
-      : super(key: key);
+  const MoviesListView({
+    required this.future,
+    Key? key,
+    required this.headlineText,
+  }) : super(key: key);
   final String headlineText;
   final Future<Model> future;
-  final double aspectRatio;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Model>(
@@ -32,8 +30,8 @@ class MoviesListView extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                AspectRatio(
-                  aspectRatio: aspectRatio,
+                SizedBox(
+                  height: 310,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: data!.length,

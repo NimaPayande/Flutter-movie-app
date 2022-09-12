@@ -36,7 +36,7 @@ class _CastWidgetState extends State<CastWidget> {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               AspectRatio(
-                aspectRatio: 2.5,
+                aspectRatio: 2.1,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,

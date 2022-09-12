@@ -31,7 +31,6 @@ class _SimilarWidgetState extends State<SimilarWidget> {
     return MoviesListView(
       future: _future,
       headlineText: 'Similar',
-      aspectRatio: 1.04,
     );
   }
 }
