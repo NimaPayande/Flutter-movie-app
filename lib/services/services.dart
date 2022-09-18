@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:movie_app/models/model.dart';
+import 'package:movie_app/models/movie_model.dart';
 import 'package:movie_app/secret.dart';
 
 import '../models/credit_model.dart';
@@ -69,9 +69,11 @@ Future<Model> getTopRatedMovies() async {
   }
 }
 
-Future<Model> discoverMovies(int genreId) async {
+Future<Model> discoverMovies({int? genreId}) async {
   endPoint = 'discover/movie';
-  final String url = '$baseUrl$endPoint$key&with_genres=$genreId';
+  final String url = genreId == null
+      ? '$baseUrl$endPoint$key'
+      : '$baseUrl$endPoint$key&with_genres=$genreId';
   final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
@@ -114,5 +116,29 @@ Future<Review> getReviews(int id, bool isTvShow) async {
     return reviewFromJson(response.body);
   } else {
     throw Exception('failed to load reviews');
+  }
+}
+
+Future<Model> movieSearch(String query) async {
+  endPoint = 'search/movie';
+  final url = '$baseUrl$endPoint$key&query=$query';
+
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return modelFromJson(response.body);
+  } else {
+    throw Exception('not found');
+  }
+}
+
+Future<Model> searchData(String query) async {
+  endPoint = 'search/multi';
+  final url = '$baseUrl$endPoint$key&query=$query';
+
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return modelFromJson(response.body);
+  } else {
+    throw Exception('not found');
   }
 }
