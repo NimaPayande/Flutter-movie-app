@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:movie_app/models/credit_model.dart';
+import 'package:movie_app/models/liked_model.dart';
 import 'package:movie_app/utils.dart';
 import 'package:movie_app/widgets/cast.dart';
 import 'package:movie_app/widgets/reviews.dart';
 import 'package:movie_app/widgets/similar.dart';
-import '../models/model.dart';
+import '../models/movie_model.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   const DetailPage(
       {Key? key,
       required this.data,
@@ -18,10 +20,18 @@ class DetailPage extends StatelessWidget {
   final Model data;
   final Credit? creditData;
   final bool isTvShow;
+
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box<LikedModel>('liked');
     return Scaffold(
         body: CustomScrollView(
+      // sliver app bar
       slivers: [
         SliverAppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -30,13 +40,45 @@ class DetailPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 5),
               child: IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.favorite_border)),
+                  onPressed: () {
+                    box.put(
+                        widget.data.results[widget.index].id,
+                        LikedModel(
+                            title: widget.data.results[widget.index].title ??
+                                widget.data.results[widget.index].name!,
+                            genres: widget.data.results[widget.index].genreIds!,
+                            voteAverage:
+                                widget.data.results[widget.index].voteAverage!,
+                            posterPath:
+                                widget.data.results[widget.index].posterPath!,
+                            isLiked: !(box
+                                    .get(
+                                      widget.data.results[widget.index].id,
+                                    )
+                                    ?.isLiked ??
+                                false)));
+                    setState(() {});
+                  },
+                  icon: box
+                              .get(
+                                widget.data.results[widget.index].id,
+                              )
+                              ?.isLiked ??
+                          false
+                      ? const Icon(Icons.favorite)
+                      : const Icon(Icons.favorite_border)),
             )
           ],
           flexibleSpace: FlexibleSpaceBar(
             background: Image.network(
-              '$imageUrl${data.results[index].posterPath}',
+              '$imageUrl${widget.data.results[widget.index].posterPath}',
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey,
+                  child: const Center(child: Text('No Image')),
+                );
+              },
             ),
           ),
         ),
@@ -48,12 +90,13 @@ class DetailPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  data.results[index].title ?? data.results[index].name!,
+                  widget.data.results[widget.index].title ??
+                      widget.data.results[widget.index].name!,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Wrap(
                   children: List.generate(
-                      data.results[index].genreIds!.length,
+                      widget.data.results[widget.index].genreIds!.length,
                       (genreIndex) => Padding(
                             padding: const EdgeInsets.only(right: 10, top: 4),
                             child: Chip(
@@ -62,9 +105,10 @@ class DetailPage extends StatelessWidget {
                               side: const BorderSide(width: 0),
                               backgroundColor: kBackgoundColor.withOpacity(.9),
                               label: Text(
-                                getGenre(
-                                    data.results[index].genreIds![genreIndex],
-                                    genreIndex),
+                                getGenres(widget
+                                        .data.results[widget.index].genreIds!)
+                                    .split(',')
+                                    .elementAt(genreIndex),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium!
@@ -82,18 +126,19 @@ class DetailPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       const Icon(Icons.date_range),
-                      Text(data.results[index].releaseDate == null
-                          ? data.results[index].firstAirDate
+                      Text(widget.data.results[widget.index].releaseDate == null
+                          ? widget.data.results[widget.index].firstAirDate
                               .toString()
                               .substring(0, 4)
-                          : data.results[index].releaseDate
+                          : widget.data.results[widget.index].releaseDate
                               .toString()
                               .substring(0, 4)),
                       const SizedBox(
                         width: 10,
                       ),
                       const Icon(Icons.star),
-                      Text(data.results[index].voteAverage.toString()),
+                      Text(widget.data.results[widget.index].voteAverage
+                          .toString()),
                     ],
                   ),
                 ),
@@ -108,24 +153,24 @@ class DetailPage extends StatelessWidget {
                   height: 15,
                 ),
                 Text(
-                  data.results[index].overview!,
+                  widget.data.results[widget.index].overview!,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Colors.white.withOpacity(.9), fontSize: 15),
                 ),
                 const SizedBox(
                   height: 25,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    print(data.results[index].id);
-                  },
-                  child: CastWidget(
-                    id: data.results[index].id!,
-                    isTvShow: isTvShow,
-                  ),
+                CastWidget(
+                  id: widget.data.results[widget.index].id!,
+                  isTvShow: widget.isTvShow,
                 ),
-                SimilarWidget(data: data, index: index, isTvShow: isTvShow),
-                ReviewsWidget(isTvShow: isTvShow, id: data.results[index].id!)
+                SimilarWidget(
+                    data: widget.data,
+                    index: widget.index,
+                    isTvShow: widget.isTvShow),
+                ReviewsWidget(
+                    isTvShow: widget.isTvShow,
+                    id: widget.data.results[widget.index].id!)
               ],
             ),
           );

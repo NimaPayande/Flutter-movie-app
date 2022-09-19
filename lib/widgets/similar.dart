@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/services/services.dart';
 import 'package:movie_app/widgets/movies_listview.dart';
-import '../models/model.dart';
+import '../models/movie_model.dart';
 
 class SimilarWidget extends StatefulWidget {
   const SimilarWidget(

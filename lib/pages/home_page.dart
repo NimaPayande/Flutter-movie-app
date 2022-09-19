@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/models/credit_model.dart';
-import 'package:movie_app/models/model.dart';
+import 'package:movie_app/models/movie_model.dart';
 import 'package:movie_app/services/services.dart';
 import 'package:movie_app/widgets/movies_listview.dart';
 

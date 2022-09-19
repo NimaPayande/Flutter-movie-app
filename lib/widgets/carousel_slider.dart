@@ -7,9 +7,14 @@ class MyCarouselSlider extends StatelessWidget {
       {required this.itemBuilder,
       required this.itemCount,
       this.viewportFraction = .5,
-      Key? key})
+      Key? key,
+      this.onPageChanged,
+      this.aspectRatio = 1.5})
       : super(key: key);
   Widget Function(BuildContext context, int index, int realindex)? itemBuilder;
+  dynamic Function(int index, CarouselPageChangedReason reason)? onPageChanged;
+
+  final double aspectRatio;
   final int itemCount;
   final double viewportFraction;
   @override
@@ -18,11 +23,11 @@ class MyCarouselSlider extends StatelessWidget {
       itemCount: itemCount,
       itemBuilder: itemBuilder,
       options: CarouselOptions(
-          enableInfiniteScroll: true,
-          reverse: true,
+          onPageChanged: onPageChanged,
+          enableInfiniteScroll: itemCount > 2,
           viewportFraction: viewportFraction,
-          enlargeCenterPage: true,
-          aspectRatio: 1.5),
+          enlargeCenterPage: itemCount != 1,
+          aspectRatio: aspectRatio),
     );
   }
 }

@@ -52,7 +52,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text('Search...'),
+                    Text('Movie Search...'),
                   ],
                 ),
               ),

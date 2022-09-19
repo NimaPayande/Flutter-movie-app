@@ -6,16 +6,16 @@ String modelToJson(Model data) => json.encode(data.toJson());
 
 class Model {
   Model({
-    required this.page,
+    this.page,
     required this.results,
-    required this.totalPages,
-    required this.totalResults,
+    this.totalPages,
+    this.totalResults,
   });
 
-  int page;
+  int? page;
   List<Result> results;
-  int totalPages;
-  int totalResults;
+  int? totalPages;
+  int? totalResults;
 
   factory Model.fromJson(Map<String, dynamic> json) => Model(
         page: json["page"],
@@ -35,24 +35,24 @@ class Model {
 
 class Result {
   Result({
-    required this.adult,
-    required this.backdropPath,
-    required this.id,
-    required this.title,
-    required this.originalTitle,
-    required this.overview,
-    required this.posterPath,
-    required this.genreIds,
-    required this.popularity,
-    required this.releaseDate,
-    required this.mediaType,
-    required this.video,
-    required this.voteAverage,
-    required this.voteCount,
-    required this.name,
-    required this.originalName,
-    required this.firstAirDate,
-    required this.originCountry,
+    this.adult,
+    this.backdropPath,
+    this.id,
+    this.title,
+    this.originalTitle,
+    this.overview,
+    this.posterPath,
+    this.genreIds,
+    this.popularity,
+    this.releaseDate,
+    this.mediaType,
+    this.video,
+    this.voteAverage,
+    this.voteCount,
+    this.name,
+    this.originalName,
+    this.firstAirDate,
+    this.originCountry,
   });
 
   bool? adult;

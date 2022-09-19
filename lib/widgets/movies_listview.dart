@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/pages/detail_page.dart';
 import 'package:movie_app/utils.dart';
-import '../models/model.dart';
+import '../models/movie_model.dart';
 
 class MoviesListView extends StatelessWidget {
   const MoviesListView({
@@ -64,6 +64,13 @@ class MoviesListView extends StatelessWidget {
                                   height: 240,
                                   width: 170,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      height: 240,
+                                      width: 170,
+                                      color: Colors.grey,
+                                    );
+                                  },
                                 ),
                               ),
                             ),
@@ -85,10 +92,13 @@ class MoviesListView extends StatelessWidget {
                                           .textTheme
                                           .bodyLarge),
                                   Text(
-                                    getGenre(
-                                        data[index].genreIds!.first, index),
-                                    style:
-                                        TextStyle(color: Colors.grey.shade400),
+                                    data[index].genreIds!.isNotEmpty
+                                        ? getGenres(data[index].genreIds!)
+                                        : '',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.grey.shade400,
+                                        fontSize: 13),
                                   )
                                 ],
                               ),

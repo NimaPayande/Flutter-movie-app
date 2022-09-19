@@ -26,7 +26,7 @@ class _CastWidgetState extends State<CastWidget> {
     return FutureBuilder<Credit>(
       future: creditsFuture,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.data != null) {
           var data = snapshot.data?.cast;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +40,8 @@ class _CastWidgetState extends State<CastWidget> {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: data!.length > 20 ? 20 : data.length,
+                  itemCount:
+                      data!.length > 20 ? 20 : data.length, //max length = 20
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(5.0),

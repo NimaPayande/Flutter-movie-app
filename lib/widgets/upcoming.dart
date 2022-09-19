@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/pages/detail_page.dart';
 import 'package:movie_app/utils.dart';
 import 'package:movie_app/widgets/carousel_slider.dart';
-import '../models/model.dart';
+import '../models/movie_model.dart';
 
-// ignore: must_be_immutable
 class UpcomingMovies extends StatelessWidget {
-  UpcomingMovies({required this.future, Key? key}) : super(key: key);
-  Future<Model> future;
+  const UpcomingMovies({required this.future, Key? key}) : super(key: key);
+  final Future<Model> future;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Model>(
@@ -72,26 +71,11 @@ class UpcomingMovies extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: List.generate(
-                                      // max genre length = 3
-                                      data[index].genreIds!.length < 4
-                                          ? data[index].genreIds!.length
-                                          : 3,
-                                      (genreIndex) => Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 3),
-                                            child: Text(
-                                              getGenre(
-                                                  data[index]
-                                                      .genreIds![genreIndex],
-                                                  genreIndex),
-                                              style:
-                                                  const TextStyle(fontSize: 10),
-                                            ),
-                                          )),
-                                )
+                                Text(
+                                  getGenres(data[index].genreIds!),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
                               ],
                             ),
                           ),
@@ -106,7 +90,13 @@ class UpcomingMovies extends StatelessWidget {
         } else if (snapshot.hasError) {
           throw snapshot.error.toString();
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return Padding(
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height / 2.5),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
       },
     );
